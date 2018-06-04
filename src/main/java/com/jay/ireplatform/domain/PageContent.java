@@ -4,7 +4,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Arrays;
+import java.sql.Blob;
 
 /**
  * Created by Jay
@@ -12,8 +12,8 @@ import java.util.Arrays;
  * des :
  */
 @Entity
-@Table(name="IREPLATFORM")
-public class content implements Serializable {
+@Table(name="CONTENT")
+public class PageContent implements Serializable {
 
     private static final long serialVersionUID = 1589546778948893733L;
 
@@ -49,7 +49,7 @@ public class content implements Serializable {
     /**
      * 图片
      */
-    private byte[] imgFile;
+    private Blob imgFile;
 
     /**
      * 发布时间
@@ -99,7 +99,6 @@ public class content implements Serializable {
         this.contentText = contentText;
     }
 
-
     public String getImageText() {
         return imageText;
     }
@@ -117,11 +116,12 @@ public class content implements Serializable {
         this.footText = footText;
     }
 
-    public byte[] getImgFile() {
+    @Lob
+    public Blob getImgFile() {
         return imgFile;
     }
 
-    public void setImgFile(byte[] imgFile) {
+    public void setImgFile(Blob imgFile) {
         this.imgFile = imgFile;
     }
 
@@ -147,26 +147,27 @@ public class content implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        content content = (content) o;
+        PageContent pageContent = (PageContent) o;
 
-        if (title != null ? !title.equals(content.title) : content.title != null) return false;
-        if (contentDate != null ? !contentDate.equals(content.contentDate) : content.contentDate != null) return false;
-        if (contentText != null ? !contentText.equals(content.contentText) : content.contentText != null) return false;
-        if (imageText != null ? !imageText.equals(content.imageText) : content.imageText != null) return false;
-        if (footText != null ? !footText.equals(content.footText) : content.footText != null) return false;
-        if (!Arrays.equals(imgFile, content.imgFile)) return false;
-        if (releaseDateTime != null ? !releaseDateTime.equals(content.releaseDateTime) : content.releaseDateTime != null)
+        if (title != null ? !title.equals(pageContent.title) : pageContent.title != null) return false;
+        if (contentDate != null ? !contentDate.equals(pageContent.contentDate) : pageContent.contentDate != null) return false;
+        if (contentText != null ? !contentText.equals(pageContent.contentText) : pageContent.contentText != null) return false;
+        if (imageText != null ? !imageText.equals(pageContent.imageText) : pageContent.imageText != null) return false;
+        if (footText != null ? !footText.equals(pageContent.footText) : pageContent.footText != null) return false;
+        if (imgFile != null ? !imgFile.equals(pageContent.imgFile) : pageContent.imgFile != null) return false;
+        if (releaseDateTime != null ? !releaseDateTime.equals(pageContent.releaseDateTime) : pageContent.releaseDateTime != null)
             return false;
-        return type != null ? type.equals(content.type) : content.type == null;
+        return type != null ? type.equals(pageContent.type) : pageContent.type == null;
     }
 
     @Override
     public int hashCode() {
-        int result = contentDate != null ? contentDate.hashCode() : 0;
+        int result = title != null ? title.hashCode() : 0;
+        result = 31 * result + (contentDate != null ? contentDate.hashCode() : 0);
         result = 31 * result + (contentText != null ? contentText.hashCode() : 0);
         result = 31 * result + (imageText != null ? imageText.hashCode() : 0);
         result = 31 * result + (footText != null ? footText.hashCode() : 0);
-        result = 31 * result + Arrays.hashCode(imgFile);
+        result = 31 * result + (imgFile != null ? imgFile.hashCode() : 0);
         result = 31 * result + (releaseDateTime != null ? releaseDateTime.hashCode() : 0);
         result = 31 * result + (type != null ? type.hashCode() : 0);
         return result;
@@ -174,14 +175,14 @@ public class content implements Serializable {
 
     @Override
     public String toString() {
-        return "content{" +
+        return "PageContent{" +
                 "id='" + id + '\'' +
                 ", title='" + title + '\'' +
                 ", contentDate='" + contentDate + '\'' +
                 ", contentText='" + contentText + '\'' +
                 ", imageText='" + imageText + '\'' +
                 ", footText='" + footText + '\'' +
-                ", imgFile=" + Arrays.toString(imgFile) +
+                ", imgFile=" + imgFile +
                 ", releaseDateTime='" + releaseDateTime + '\'' +
                 ", type=" + type +
                 '}';
